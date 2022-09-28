@@ -42,6 +42,7 @@ class EventDataTransformer(object):
     def get_valid_address(self, address: str) -> str:
         return "0x" + address[-40:]
 
+    # TODO: Fix this method, it is sometime returning wrong value (right value = wrong value * 1e18).
     def get_valid_value(self, value: str) -> float:
         try:
             return float.fromhex(value) * (1e-18)

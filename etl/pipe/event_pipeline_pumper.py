@@ -1,6 +1,6 @@
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
-from database.mongodb_connector import MongoDBEventLoader
+from database.mongodb_connector import MongoDBConnector
 from etl.pump.event_pump import EventPump
 
 
@@ -8,16 +8,16 @@ class EventPipelinePumper:
     def __init__(
         self,
         contract_addresses: list[str],
-        item_loader: MongoDBEventLoader,
+        item_loader: MongoDBConnector,
         batch_size: int,
         max_workers: int,
         provider,
         abi: list,
     ) -> None:
         self.contract_addresses: list[str] = [
-            Web3.toChecksumAddress(address).lower() for address in contract_addresses
+            Web3.toChecksumAddress(address) for address in contract_addresses
         ]
-        self.item_loader: MongoDBEventLoader = item_loader
+        self.item_loader: MongoDBConnector = item_loader
         self.batch_size: int = batch_size
         self.max_workers: int = max_workers
         self.abi: list = abi

@@ -1,5 +1,5 @@
 from typing import Callable, Iterable 
-from etl.auto.batch_distributor import dynamic_batch_iterator
+from auto.batch_distributor import dynamic_batch_iterator
 from etl.batch.bounded_executor import BoundedExecutor
 
 
