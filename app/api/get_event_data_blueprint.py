@@ -1,6 +1,7 @@
 from sanic import Blueprint
 from sanic.request import Request
 from sanic_openapi.openapi2 import doc
+from sanic.request import RequestParameters
 from sanic.response import json
 from sanic.log import logger
 from web3 import Web3
@@ -57,17 +58,17 @@ _mongo: MongoDBConnector = MongoDBConnector()
 @doc.response(401, {"message": str}, description="Unauthorized")
 @doc.response(404, {"message": str}, description="Not Found")
 async def get_event_data(request: Request):
-    token_address = request.args.get("token_address")
-    block_number: int = request.args.get("block_number")
-    transaction_hash: str = request.args.get("transaction_hash")
-    event_type: str = request.args.get("event_type")
+    request_parameters: RequestParameters = request.args
+
+    token_address = request_parameters.get("token_address")
+    block_number: int = request_parameters.get("block_number")
+    transaction_hash: str = request_parameters.get("transaction_hash")
+    event_type: str = request_parameters.get("event_type")
 
     filter: dict = {}
 
     if token_address:
-        token_address: str = web3.toChecksumAddress(
-            request.args.get("token_address")
-        ).lower()
+        token_address: str = web3.toChecksumAddress(token_address).lower()
         filter["block_number"] = str(token_address)
     if block_number:
         filter["block_number"] = int(block_number)
