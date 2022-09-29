@@ -13,8 +13,8 @@ class MongoDBConfig:
     LOCAL_CONNECTION_URL = f"mongodb://{HOST}:{PORT}"
     CONNECTION_URL = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}"
 
-    DATABASE = os.environ.get("DATABASE", "bsc_data")
-    COLLECTION = os.environ.get("COLLECTION", "bep_20_events")
+    DATABASE = os.environ.get("DATABASE", "db_name")
+    COLLECTION = os.environ.get("COLLECTION", "collection_name")
 
 
 class SanicConfig:

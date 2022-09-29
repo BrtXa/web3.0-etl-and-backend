@@ -1,4 +1,4 @@
-from artifacts.abi.bep20_abi import BEP20_ABI
+from services.abi.bep20_abi import BEP20_ABI
 
 
 class ABI:
