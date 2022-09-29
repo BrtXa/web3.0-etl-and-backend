@@ -2,8 +2,8 @@ import logging
 import time
 import click
 from config import Provider
-from database.mongodb_connector import MongoDBEventLoader
-from etl.auto.string_input_handler import get_provider_from_string, get_abi_from_string
+from database.mongodb_connector import MongoDBConnector
+from auto.string_input_handler import get_provider_from_string, get_abi_from_string
 from etl.pipe.event_pipeline_pumper import EventPipelinePumper
 from etl.pipe.pipeline import Pipeline
 
@@ -85,13 +85,13 @@ def token_events_collector(
     provider: str,
     abi: str,
 ):
-    _mongo = MongoDBEventLoader()
+    _mongo = MongoDBConnector()
     _mongo.delete_events_for_testing()
 
     logging_basic_config()
     _LOGGER: logging.Logger = logging.getLogger(__name__)
 
-    item_loader: MongoDBEventLoader = MongoDBEventLoader()
+    item_loader: MongoDBConnector = MongoDBConnector()
 
     _LOGGER.info(f"Start streaming from block {start_block} to block {end_block}")
 

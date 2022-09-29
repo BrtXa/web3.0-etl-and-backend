@@ -2,10 +2,12 @@ import sys
 from pymongo import MongoClient
 from pymongo import UpdateOne
 from config import MongoDBConfig
+from pymongo.database import Database
+from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 
 
-class MongoDBEventLoader(object):
+class MongoDBConnector(object):
     def __init__(
         self,
         collection_url: str = MongoDBConfig.LOCAL_CONNECTION_URL,
@@ -13,12 +15,11 @@ class MongoDBEventLoader(object):
         collection_name: str = MongoDBConfig.COLLECTION,
     ) -> None:
         try:
-            # FIXME Unable to read from .env file
-            self.client: MongoClient = MongoClient(collection_url)
+            self.client: MongoClient = MongoClient(collection_url, connect=False)
         except:
             sys.exit(1)
-        self.db = self.client[db_name]
-        self.collection = self.db[collection_name]
+        self.db: Database = self.client[db_name]
+        self.collection: Collection = self.db[collection_name]
 
     def load_data(self, data: list) -> None:
         self.__create_data(data)
@@ -36,6 +37,16 @@ class MongoDBEventLoader(object):
             self.collection.bulk_write(bulk_operation)
         except Exception as bwe:
             print(bwe)
+
+    def get_data(self, filter: dict) -> list[dict]:
+        return self.__read_data(filter=filter)
+
+    def __read_data(self, filter: dict) -> list[dict]:
+        result: list = []
+        cursor: Cursor = self.collection.find(filter)
+        for doc in cursor:
+            result.append(doc)
+        return result
 
     def delete_events_for_testing(self):
         filter: dict = {"block_number": {"$lte": 21175364}}

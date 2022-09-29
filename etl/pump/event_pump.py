@@ -1,9 +1,8 @@
 import logging
 from web3 import Web3
 from web3._utils.filters import Filter
-from database.mongodb_connector import MongoDBEventLoader
-from etl.auto.abi_handler import get_event_hash
-from etl.auto.event_data_transformer import EventDataTransformer
+from database.mongodb_connector import MongoDBConnector
+from auto.event_data_transformer import EventDataTransformer
 from etl.batch.batch_job_executor import BatchJobExecutor
 from etl.model.pump_model import PumpModel
 
@@ -20,7 +19,7 @@ class EventPump(PumpModel):
         batch_size: int,
         max_workers: int,
         web3: Web3,
-        item_loader: MongoDBEventLoader,
+        item_loader: MongoDBConnector,
     ) -> None:
         self.start_block: int = start_block
         self.end_block: int = end_block
@@ -31,7 +30,7 @@ class EventPump(PumpModel):
             max_workers=max_workers,
         )
         self.web3: Web3 = web3
-        self.item_loader: MongoDBEventLoader = item_loader
+        self.item_loader: MongoDBConnector = item_loader
         self.event_data_transformer: EventDataTransformer = EventDataTransformer()
 
     def _start(self):
@@ -68,11 +67,13 @@ class EventPump(PumpModel):
         topics: list[str],
     ) -> list:
         filter_params: dict = {
-            "addresses": addresses,
             "fromBlock": start_block,
             "toBlock": end_block,
             "topics": [topics],
         }
+        if addresses is not None and len(addresses) > 0:
+            filter_params["address"] = addresses
+
         event_filter: Filter = self.web3.eth.filter(filter_params)
         events: list = event_filter.get_all_entries()
 
