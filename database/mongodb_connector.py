@@ -10,7 +10,7 @@ from pymongo.cursor import Cursor
 class MongoDBConnector(object):
     def __init__(
         self,
-        collection_url: str = MongoDBConfig.LOCAL_CONNECTION_URL,
+        collection_url: str = MongoDBConfig.CONNECTION_URL,
         db_name: str = MongoDBConfig.DATABASE,
         collection_name: str = MongoDBConfig.COLLECTION,
     ) -> None:

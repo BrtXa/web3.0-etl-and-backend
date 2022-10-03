@@ -10,7 +10,6 @@ class MongoDBConfig:
     PASSWORD = os.environ.get("MONGODB_PASSWORD", "password")
     HOST = os.environ.get("MONGODB_HOST", "0.0.0.0")
     PORT = os.environ.get("MONGODB_PORT", "27017")
-    LOCAL_CONNECTION_URL = f"mongodb://{HOST}:{PORT}"
     CONNECTION_URL = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}"
 
     DATABASE = os.environ.get("DATABASE", "db_name")
@@ -19,7 +18,7 @@ class MongoDBConfig:
 
 class SanicConfig:
     RUN_SETTING = {
-        "host": os.environ.get("SERVER_HOST", "localhost"),
+        "host": os.environ.get("SERVER_HOST", "0.0.0.0"),
         "port": int(os.environ.get("SERVER_PORT", 8080)),
         "debug": True,
         "access_log": False,
