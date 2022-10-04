@@ -5,10 +5,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: python-web3-etl-backend
+    depends_on:
+      - mongodb
     ports:
       - 8080:8080
+    restart: always
     volumes:
       - .:/python-web3-etl-backend
+    command: python3 run_api.py
 
 volumes:
   data: {}

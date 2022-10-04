@@ -25,9 +25,9 @@ class SanicConfig:
         "auto_reload": True,
         "workers": 4,
     }
-    SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
-    API_TITLE = os.getenv("API_TITLE", "API")
-    API_DESCRIPTION = os.getenv("API_DESCRIPTION", "")
+    SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY")
+    API_TITLE = os.environ.get("API_TITLE", "API")
+    API_DESCRIPTION = os.environ.get("API_DESCRIPTION", "")
 
 
 class Provider:

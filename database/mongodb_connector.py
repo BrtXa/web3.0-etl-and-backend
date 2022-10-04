@@ -10,12 +10,12 @@ from pymongo.cursor import Cursor
 class MongoDBConnector(object):
     def __init__(
         self,
-        collection_url: str = MongoDBConfig.CONNECTION_URL,
+        connection_url: str = MongoDBConfig.CONNECTION_URL,
         db_name: str = MongoDBConfig.DATABASE,
         collection_name: str = MongoDBConfig.COLLECTION,
     ) -> None:
         try:
-            self.client: MongoClient = MongoClient(collection_url, connect=False)
+            self.client: MongoClient = MongoClient(connection_url, connect=False)
         except:
             sys.exit(1)
         self.db: Database = self.client[db_name]
