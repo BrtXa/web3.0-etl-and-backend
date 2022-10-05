@@ -1,3 +1,5 @@
 .venv
+.env
+docker-compose.dev.yaml
 __pycache__/
-test
+test/

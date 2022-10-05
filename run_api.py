@@ -10,7 +10,7 @@ app = create_app(SanicConfig, MongoDBConfig)
 app.blueprint(openapi2_blueprint)
 
 
-@app.route("/hello-world", methods={"GET", "POST"})
+@app.route("/", methods={"GET", "POST"})
 @doc.tag("hello_world")
 @doc.summary("Hello, Sanic!")
 async def hello_world(request):
